@@ -1,0 +1,118 @@
+```{r}
+require(tidyverse)
+require(data.table)
+require(randomForest)
+require(mclust)
+require(rpart)
+require(rpart.plot)
+require(foreign)
+require(e1071)
+```
+Selection
+#Data Source
+#https://www.kaggle.com/datasets/whenamancodes/credit-card-customers-prediction
+
+Pre-processing
+```{r}
+BankChurners <- read.csv("./Project_Dataset-20250601/Dataset/BankChurners.csv")
+new_custom <- read.csv("./Project_Dataset-20250601/Dataset/new_custom.csv")
+new_customer <- read.csv("./Project_Dataset-20250601/Dataset/new_customer.csv")
+BankChurners
+new_custom
+new_customer
+BankChurnerscheckNA <- is.na(BankChurners)
+BankChurnerscheckNA
+new_customcheckNA <- is.na(new_custom)
+new_customcheckNA
+new_customercheckNA <- is.na(new_customer)
+new_customercheckNA
+```
+
+Excellent: 0-10% utilization
+Good: 10-30% utilization
+Fair: 30-50% utilization
+Poor: 50% or higher utilization
+Transformation
+```{r}
+Transform <- BankChurners
+Transform$Util_Rank <- sapply(Transform$Avg_Utilization_Ratio, function(x) {
+                              if (x < 0.1) "Excellent" 
+                              else if (x < 0.3) "Good" 
+                              else if (x < 0.5) "Fair" 
+                              else "Poor"
+                        })
+Transform
+```
+
+Descriptive Analysis
+Question1 - Basic Aggregration
+```{r}
+#Summarise the average credit limit by different card type
+averageCredit_Limit <- tapply(Transform$Credit_Limit, Transform$Card_Category, mean)
+as.data.frame(averageCredit_Limit)
+#count the number of different education level
+educationCount <- table(Transform$Education_Level)
+as.data.frame(educationCount)
+#Summaries Average of Open to buy all Income Category
+averageOpen_to_buy <- tapply(Transform$Avg_Open_To_Buy, Transform$Income_Category, mean)
+as.data.frame(averageOpen_to_buy)
+```
+
+Question2 - Basic statics (Bar)
+```{r}
+
+```
+
+Question3 - Basic statics (pie)
+```{r}
+
+```
+
+Question4 - Relation(scatter)
+```{r}
+
+```
+
+https://www.digitalocean.com/community/tutorials/normalize-data-in-r
+https://stats.stackexchange.com/questions/298507/mclust-model-names-corresponding-to-common-models-i-e-those-used-for-lpa-lc
+Modelname EEE = Equal variances and equal covariances
+if you want to make the clustering like a matrix, try to use modelname EEE
+Question5 - Clustering
+```{r}
+
+```
+
+Question6 - pattern finding(CART tree)
+```{r}
+
+rpart.plot(Tree)
+```
+
+Question7 - classification(Naive Bias)
+```{r}
+#NB Classification
+
+
+#new customers
+
+
+#make an enquiry
+predict()
+```
+
+Question8 - Prediction/simulation (random Forest)
+```{r}
+#model building
+
+
+#model testing
+
+#new customer
+
+
+#choose one row data for testing
+predict()
+```
+
+Evualtion
+#Write you finding in Report, Thanks!

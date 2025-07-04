@@ -1,0 +1,31 @@
+﻿"Customer_Age","Gender","Dependent_count","Education_Level","Marital_Status","Income_Category","Months_on_book","Total_Relationship_Count"
+50,"M",4,"Unknown","Married","$40K - $60K",35,6
+50,"M",2,"Graduate","Married","$80K - $120K",37,6
+56,"F",1,"Unknown","Married","Less than $40K",45,4
+54,"F",1,"Uneducated","Married","Unknown",50,4
+50,"F",1,"High School","Married","Less than $40K",44,4
+42,"F",4,"Unknown","Unknown","Less than $40K",34,5
+58,"M",1,"College","Single","$80K - $120K",45,5
+42,"M",3,"Doctorate","Single","$60K - $80K",36,6
+54,"F",3,"Unknown","Single","Less than $40K",36,2
+61,"M",0,"Uneducated","Married","$80K - $120K",48,2
+34,"F",3,"High School","Single","Less than $40K",21,2
+35,"F",2,"College","Married","$40K - $60K",24,4
+51,"M",0,"College","Married","$120K +",35,5
+44,"F",1,"Unknown","Divorced","Unknown",36,3
+37,"F",5,"High School","Single","$40K - $60K",19,4
+38,"M",3,"Post-Graduate","Married","$60K - $80K",36,4
+40,"F",3,"Uneducated","Single","Unknown",36,3
+41,"M",5,"Uneducated","Single","$80K - $120K",32,4
+36,"F",2,"Post-Graduate","Divorced","Less than $40K",25,5
+42,"M",4,"Graduate","Single","$40K - $60K",33,5
+37,"M",2,"Graduate","Divorced","$80K - $120K",25,3
+43,"F",3,"High School","Divorced","Less than $40K",38,3
+59,"F",1,"College","Single","Less than $40K",48,5
+39,"F",2,"Graduate","Single","Less than $40K",31,5
+48,"M",4,"Uneducated","Married","$80K - $120K",37,5
+52,"M",2,"Graduate","Married","$80K - $120K",37,1
+50,"F",2,"Graduate","Married","Less than $40K",37,2
+40,"M",2,"Graduate","Divorced","$60K - $80K",36,5
+46,"F",1,"Graduate","Single","$40K - $60K",34,4
+60,"M",1,"Graduate","Single","$80K - $120K",55,6
