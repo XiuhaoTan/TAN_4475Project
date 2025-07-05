@@ -15,17 +15,12 @@ Selection
 Pre-processing
 ```{r}
 BankChurners <- read.csv("./Project_Dataset-20250601/Dataset/BankChurners.csv")
-new_custom <- read.csv("./Project_Dataset-20250601/Dataset/new_custom.csv")
-new_customer <- read.csv("./Project_Dataset-20250601/Dataset/new_customer.csv")
+
 BankChurners
-new_custom
-new_customer
+
 BankChurnerscheckNA <- is.na(BankChurners)
 BankChurnerscheckNA
-new_customcheckNA <- is.na(new_custom)
-new_customcheckNA
-new_customercheckNA <- is.na(new_customer)
-new_customercheckNA
+
 ```
 
 Excellent: 0-10% utilization
@@ -48,29 +43,49 @@ Descriptive Analysis
 Question1 - Basic Aggregration
 ```{r}
 #Summarise the average credit limit by different card type
-averageCredit_Limit <- tapply(Transform$Credit_Limit, Transform$Card_Category, mean)
-as.data.frame(averageCredit_Limit)
+avgCreditLimit <- tapply(Transform$Credit_Limit, Transform$Card_Category, mean)
+as.data.frame(avgCreditLimit)
 #count the number of different education level
 educationCount <- table(Transform$Education_Level)
 as.data.frame(educationCount)
 #Summaries Average of Open to buy all Income Category
-averageOpen_to_buy <- tapply(Transform$Avg_Open_To_Buy, Transform$Income_Category, mean)
-as.data.frame(averageOpen_to_buy)
+avgOpentobuy <- tapply(Transform$Avg_Open_To_Buy, Transform$Income_Category, mean)
+as.data.frame(avgOpentobuy)
 ```
 
 Question2 - Basic statics (Bar)
 ```{r}
-
+avgSorted <- sort(avgOpentobuy, decreasing = TRUE)
+barplot(avgSorted, 
+        main = "Average Open to Buy by Income Category",
+        xlab = "Income Category", 
+        ylab = "Average Open To Buy",
+        cex.names = 0.7)
 ```
 
 Question3 - Basic statics (pie)
 ```{r}
-
+educationCount <- sort(educationCount,decreasing = TRUE)
+pie(educationCount,
+    labels = names(educationCount))
 ```
 
 Question4 - Relation(scatter)
 ```{r}
+#fit <- Mclust(Transform[, c("Total_Trans_Amt", "Total_Trans_Ct")])
+plot(Transform$Total_Trans_Amt, Transform$Total_Trans_Ct,
+     xlab = "Transform$Total_Trans_Amt",
+     ylab = "Transform$Total_Trans_Ct")
 
+abline(lm(Transform$Total_Trans_Ct ~ Transform$Total_Trans_Amt), col = "red")
+
+model <- lm(Total_Trans_Ct ~ Total_Trans_Amt, data = Transform)
+rSquared <- summary(model)$r.squared
+
+text(x = max(Transform$Total_Trans_Amt) * 0.62, 
+     y = max(Transform$Total_Trans_Ct) * 0.61, 
+     labels = bquote(R^2 == .(round(rSquared, 2)))
+     )
 ```
 
 https://www.digitalocean.com/community/tutorials/normalize-data-in-r
@@ -79,39 +94,63 @@ Modelname EEE = Equal variances and equal covariances
 if you want to make the clustering like a matrix, try to use modelname EEE
 Question5 - Clustering
 ```{r}
-
+set.seed(114515)
+fit <- Mclust(Transform[,c("Total_Trans_Ct","Customer_Age")],G = 4,modelNames = "EEE")
+plot(fit, what = "classification",
+     xlab = 'Transform.Total_Trans_Ct',
+     ylab = 'Transform.Customer_Age')
 ```
 
 Question6 - pattern finding(CART tree)
 ```{r}
-
+size <- nrow(Transform)
+training <- sample(seq(size),size*0.7,replace = F)
+train <- Transform[training,]
+test <- Transform[-training,]
+Tree <- rpart(Util_Rank~Total_Revolving_Bal+Income_Category,data = train)
 rpart.plot(Tree)
 ```
 
 Question7 - classification(Naive Bias)
 ```{r}
 #NB Classification
-
+model <- naiveBayes(Util_Rank ~ Customer_Age
+                    +Gender
+                    +Dependent_count
+                    +Education_Level
+                    +Marital_Status
+                    +Income_Category
+                    +Months_on_book
+                    +Total_Relationship_Count, data = Transform)
 
 #new customers
-
-
+new_custom <- read.csv("./Project_Dataset-20250601/Dataset/new_custom.csv")
+new_customer <- read.csv("./Project_Dataset-20250601/Dataset/new_customer.csv")
 #make an enquiry
-predict()
+predict(model, new_custom)
+predict(model, new_customer)
 ```
 
 Question8 - Prediction/simulation (random Forest)
 ```{r}
 #model building
-
+model <- randomForest(formula=Credit_Limit ~ Customer_Age
+                      +Gender
+                      +Dependent_count
+                      +Education_Level
+                      +Marital_Status
+                      +Income_Category
+                      +Months_on_book
+                      +Total_Relationship_Count, data = Transform,ntree=1000)
 
 #model testing
-
+plot(model)
 #new customer
 
 
 #choose one row data for testing
-predict()
+predict(model, new_custom)
+predict(model, new_customer)
 ```
 
 Evualtion
