@@ -130,7 +130,6 @@ new_customer <- read.csv("./Project_Dataset-20250601/Dataset/new_customer.csv")
 #make an enquiry
 predict(model, new_custom)
 predict(model, new_customer)
-
 ```
 
 Question8 - Prediction/simulation (random Forest)
