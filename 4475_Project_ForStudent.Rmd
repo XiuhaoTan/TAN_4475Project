@@ -129,6 +129,16 @@ new_customer <- read.csv("./Project_Dataset-20250601/Dataset/new_customer.csv")
 #make an enquiry
 predict(model, new_custom)
 predict(model, new_customer)
+
+new_customer$Predicted_Util_Rank <- predict(model, new_customer)
+one_new <- new_customer[1, ]
+similar_existing <- subset(Transform,
+                           Income_Category == one_new$Income_Category &
+                           Education_Level == one_new$Education_Level &
+                           Marital_Status == one_new$Marital_Status &
+                           abs(Customer_Age - one_new$Customer_Age) <= 5)
+table(similar_existing$Util_Rank)
+
 ```
 
 Question8 - Prediction/simulation (random Forest)
@@ -151,6 +161,19 @@ plot(model)
 #choose one row data for testing
 predict(model, new_custom)
 predict(model, new_customer)
+
+
+new_customer[1, ]
+predicted_limit <- new_customer$Predicted_Credit_Limit[1]
+
+predicted_limit
+
+similar_customers <- subset(Transform,
+                            Income_Category == "Less than $40K" &
+                            Education_Level == "High School" &
+                            abs(Customer_Age - 50) <= 5)
+summary(similar_customers$Credit_Limit)
+
 ```
 
 Evualtion
